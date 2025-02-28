@@ -10,5 +10,9 @@ terraform {
 provider "example" {}
 
 resource "example" "test" {
-  a_value = "Hello, world!"
+  a_value = "Hello, World!"
+}
+
+resource "example" "test2" {
+  a_value = "Hello, World again!"
 }

@@ -30,7 +30,7 @@ func (r *exampleResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 
 func (r *exampleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan struct {
-		ExampleValue types.String `tfsdk:"a_value"`
+		AValue types.String `tfsdk:"a_value"`
 	}
 
 	diags := req.Plan.Get(ctx, &plan)
@@ -39,6 +39,7 @@ func (r *exampleResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
+	// Set the state with the value from the plan
 	resp.State.Set(ctx, plan)
 }
 
@@ -46,6 +47,18 @@ func (r *exampleResource) Read(ctx context.Context, req resource.ReadRequest, re
 }
 
 func (r *exampleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan struct {
+		AValue types.String `tfsdk:"a_value"`
+	}
+
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Update the state with the new value
+	resp.State.Set(ctx, plan)
 }
 
 func (r *exampleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
